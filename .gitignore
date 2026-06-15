@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+.npm/
+npm-debug.log*
+.env
+.env.local
+.env.*.local
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.DS_Store
+Thumbs.db
