@@ -5,12 +5,14 @@ describe('PostgresIndicatorRepository Integration Test', () => {
   let repository: PostgresIndicatorRepository;
 
   beforeEach(async () => {
+    // Ensures a clean environment for each test specification
     await pool.query('DELETE FROM indicator_values');
     await pool.query('DELETE FROM indicators');
     repository = new PostgresIndicatorRepository();
   });
 
   afterAll(async () => {
+    // Safely closes the pool to allow Jest process termination
     await pool.end();
   });
 
