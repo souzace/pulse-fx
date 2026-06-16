@@ -2,6 +2,8 @@ import fastify from 'fastify';
 import { pool } from '../../database';
 import { indicatorsRoutes } from './routes/indicators.routes';
 import { syncRoutes } from './routes/sync.routes';
+import { favoritesRoutes } from './routes/favorites.routes';
+
 const app = fastify({
   logger: false,
 });
@@ -14,6 +16,7 @@ app.get('/health', async () => {
 // API routes registration
 app.register(indicatorsRoutes);
 app.register(syncRoutes);
+app.register(favoritesRoutes);
 
 app.addHook('onClose', async () => {
   await pool.end();
