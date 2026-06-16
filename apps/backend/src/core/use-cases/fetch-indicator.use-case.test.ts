@@ -21,7 +21,9 @@ describe('FetchIndicatorUseCase TDD', () => {
       findByCode: jest.fn(),
       createIndicator: jest.fn(),
       saveValue: jest.fn(),
-    };
+      findAll: jest.fn(),
+      getLatestValues: jest.fn(),
+    } as unknown as jest.Mocked<IndicatorRepository>;
 
     mockProvider = {
       fetchValues: jest.fn(),

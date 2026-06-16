@@ -8,13 +8,11 @@ export interface Indicator {
 }
 
 export interface IndicatorRepository {
+  createIndicator(code: string, name: string, source: string, frequency: string, description: string): Promise<string>;
   findByCode(code: string): Promise<Indicator | null>;
-  createIndicator(
-    code: string,
-    name: string,
-    source: string,
-    frequency: string,
-    description: string
-  ): Promise<string>;
   saveValue(indicatorId: string, value: number, date: string): Promise<void>;
+  
+  // New methods for data retrieval
+  findAll(): Promise<Indicator[]>;
+  getLatestValues(indicatorId: string, limit: number): Promise<{ date: string; value: number }[]>;
 }

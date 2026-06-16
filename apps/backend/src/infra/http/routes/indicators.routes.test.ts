@@ -45,4 +45,23 @@ describe('Indicators HTTP Routes (E2E)', () => {
     expect(dbResult.rows.length).toBe(1);
     expect(dbResult.rows[0].name).toBe('US Dollar to Brazilian Real');
   });
+
+  it('should list all indicators with their latest values and variation', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/v1/indicators',
+    });
+
+    expect(response.statusCode).toBe(200);
+    const data = response.json();
+    expect(Array.isArray(data)).toBe(true);
+    
+    // If the database has data from previous tests, we can assert structure
+    if (data.length > 0) {
+      expect(data[0]).toHaveProperty('id');
+      expect(data[0]).toHaveProperty('code');
+      expect(data[0]).toHaveProperty('currentValue');
+      expect(data[0]).toHaveProperty('variation');
+    }
+  });
 });

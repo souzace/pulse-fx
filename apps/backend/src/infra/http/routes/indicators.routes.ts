@@ -1,6 +1,7 @@
 import { FastifyInstance, FastifyRequest } from 'fastify';
 import { PostgresIndicatorRepository } from '../../adapters/postgres-indicator.repository';
 import { CreateIndicatorUseCase } from '../../../core/use-cases/create-indicator.use-case';
+import { ListIndicatorsUseCase } from '../../../core/use-cases/list-indicators.use-case';
 
 interface CreateIndicatorBody {
   code: string;
@@ -11,6 +12,7 @@ interface CreateIndicatorBody {
 }
 
 export async function indicatorsRoutes(app: FastifyInstance) {
+  
   app.post(
     '/v1/indicators',
     async (request: FastifyRequest<{ Body: CreateIndicatorBody }>, reply) => {
@@ -47,4 +49,14 @@ export async function indicatorsRoutes(app: FastifyInstance) {
       }
     }
   );
+  
+  
+  app.get('/v1/indicators', async (request, reply) => {
+    const repository = new PostgresIndicatorRepository();
+    const useCase = new ListIndicatorsUseCase(repository);
+    
+    const result = await useCase.execute();
+    
+    return reply.status(200).send(result);
+  });
 }
