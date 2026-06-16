@@ -15,4 +15,5 @@ export interface IndicatorRepository {
   // New methods for data retrieval
   findAll(): Promise<Indicator[]>;
   getLatestValues(indicatorId: string, limit: number): Promise<{ date: string; value: number }[]>;
+  getHistory(indicatorId: string): Promise<{ date: string; value: number }[]>;
 }

@@ -59,4 +59,18 @@ export class PostgresIndicatorRepository implements IndicatorRepository {
       value: parseFloat(row.value)
     }));
   }
+
+  async getHistory(indicatorId: string): Promise<{ date: string; value: number }[]> {
+    const query = `
+      SELECT TO_CHAR(reference_date, 'YYYY-MM-DD') as date, value 
+      FROM indicator_values 
+      WHERE indicator_id = $1 
+      ORDER BY reference_date ASC
+    `;
+    const result = await pool.query(query, [indicatorId]);
+    return result.rows.map(row => ({
+      date: row.date,
+      value: parseFloat(row.value)
+    }));
+  }
 }

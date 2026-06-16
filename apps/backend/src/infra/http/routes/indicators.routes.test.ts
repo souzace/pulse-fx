@@ -64,4 +64,16 @@ describe('Indicators HTTP Routes (E2E)', () => {
       expect(data[0]).toHaveProperty('variation');
     }
   });
+
+  it('should return indicator history', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/v1/indicators/00000000-0000-0000-0000-000000000000/history',
+    });
+
+    expect(response.statusCode).toBe(200);
+    const data = response.json();
+    expect(Array.isArray(data)).toBe(true);
+  });
+
 });

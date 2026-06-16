@@ -12,7 +12,8 @@ describe('ListIndicatorsUseCase', () => {
       saveValue: jest.fn(),
       findAll: jest.fn(),
       getLatestValues: jest.fn(),
-    };
+      getHistory: jest.fn(),
+    } as unknown as jest.Mocked<IndicatorRepository>;
 
     useCase = new ListIndicatorsUseCase(mockIndicatorRepository);
   });
