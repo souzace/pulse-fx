@@ -7,18 +7,37 @@ interface HistoryRecord {
   value: number;
 }
 
+interface Indicator {
+  id: string;
+  name: string;
+  code: string;
+  source: string;
+  frequency: string;
+  description?: string;
+}
+
 export const IndicatorDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<HistoryRecord[] | null>(null);
+  const [indicator, setIndicator] = useState<Indicator | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
 
-    api
-      .get(`/v1/indicators/${id}/history`)
-      .then((response) => {
-        setData(response.data);
+    Promise.all([
+      api.get(`/v1/indicators/${id}/history`),
+      api.get("/v1/indicators")
+    ])
+      .then(([historyResponse, indicatorsResponse]) => {
+        setData(historyResponse.data);
+        
+        const indicatorsList: Indicator[] = indicatorsResponse.data;
+        const currentIndicator = indicatorsList.find((item) => item.id === id);
+        if (currentIndicator) {
+          setIndicator(currentIndicator);
+        }
+        
         setLoading(false);
       })
       .catch((err) => {
@@ -50,15 +69,24 @@ export const IndicatorDetails: React.FC = () => {
         &larr; Voltar para Dashboard
       </Link>
 
-      <h1
+      <div
         style={{
           marginTop: "20px",
           borderBottom: "2px solid #eee",
-          paddingBottom: "10px",
+          paddingBottom: "15px",
         }}
       >
-        Histórico do Indicador
-      </h1>
+        <h1 style={{ margin: "0 0 5px 0" }}>
+          {indicator ? indicator.name : "Histórico do Indicador"}
+        </h1>
+        {indicator && (
+          <p style={{ margin: 0, color: "#666", fontSize: "14px" }}>
+            Código: <strong>{indicator.code}</strong> | Fonte:{" "}
+            <strong>{indicator.source}</strong> | Frequência:{" "}
+            <strong>{indicator.frequency}</strong>
+          </p>
+        )}
+      </div>
 
       <table
         style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}
