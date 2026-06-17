@@ -11,7 +11,7 @@
     "migrate:up": "node-pg-migrate -r dotenv/config --tsconfig tsconfig.json -m src/infra/migrations up",
     "migrate:down": "node-pg-migrate -r dotenv/config --tsconfig tsconfig.json -m src/infra/migrations down",
     "migrate:test:up": "node --env-file=.env.test ./node_modules/node-pg-migrate/bin/node-pg-migrate --tsconfig tsconfig.json -m src/infra/migrations up",
-    "db:test:create": "node --env-file=.env.test -e \"require('pgtools').createdb(process.env.DATABASE_URL.replace('/pulse_fx_test', '/postgres'), 'pulse_fx_test').catch(() => {})\"",
+    "db:test:create": "node --env-file=.env.test -e \"require('pgtools').createdb({ user: process.env.PGUSER, password: process.env.PGPASSWORD, host: process.env.PGHOST, port: process.env.PGPORT }, process.env.PGDATABASE).catch(() => {})\"",
     "pretest": "npm run db:test:create && npm run migrate:test:up",
     "test": "node --env-file=.env.test ./node_modules/jest/bin/jest.js --runInBand"
   },
