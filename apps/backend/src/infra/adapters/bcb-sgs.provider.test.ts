@@ -24,8 +24,8 @@ describe('BcbSgsProvider', () => {
       ]),
     });
 
-    // Act: Use the '432' test key defined in PROVIDER_CONFIG
-    const result = await provider.fetchValues('432', 1);
+    // Act: Use the 'SELIC_META' test key defined in PROVIDER_CONFIG
+    const result = await provider.fetchValues('SELIC_META', 1);
 
     // Assert: Verify the provider mapped the date format and parsed the value correctly
     expect(result).toEqual([
@@ -55,8 +55,8 @@ describe('BcbSgsProvider', () => {
     });
 
     // Act & Assert: The provider should throw a generic fetch error
-    await expect(provider.fetchValues('432')).rejects.toThrow(
-      'Failed to fetch data from BCB SGS for code 432'
+    await expect(provider.fetchValues('SELIC_META')).rejects.toThrow(
+      'Failed to fetch data from BCB SGS for code SELIC_META'
     );
   });
 });
