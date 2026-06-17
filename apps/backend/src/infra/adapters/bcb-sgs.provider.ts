@@ -1,4 +1,5 @@
 import { ExternalIndicatorProvider, IndicatorObservation } from '../../core/ports/external-indicator.provider';
+import { PROVIDER_CONFIG } from '../../config/providers.config';
 
 interface BcbSgsResponse {
   data: string;
@@ -7,7 +8,15 @@ interface BcbSgsResponse {
 
 export class BcbSgsProvider implements ExternalIndicatorProvider {
   async fetchValues(code: string, limit: number = 10): Promise<IndicatorObservation[]> {
-    const url = `https://api.bcb.gov.br/dados/serie/bcdata.sgs.${code}/dados/ultimos/${limit}?formato=json`;
+    // Access the BCB namespace from the provider configuration
+    const mapping = PROVIDER_CONFIG.BCB[code as keyof typeof PROVIDER_CONFIG.BCB];
+
+    if (!mapping) {
+      throw new Error(`Indicator code ${code} not mapped to BCB series.`);
+    }
+
+    // Use the mapped ID for the API request
+    const url = `https://api.bcb.gov.br/dados/serie/bcdata.sgs.${mapping.id}/dados/ultimos/${limit}?formato=json`;
     
     const response = await fetch(url);
     if (!response.ok) {
