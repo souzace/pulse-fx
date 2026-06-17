@@ -12,6 +12,7 @@ export const PROVIDER_CONFIG = {
     '432': { id: 432, description: 'Série exclusiva para testes de integração' }
   },
   FRED: {
-    'FEDFUNDS': { id: 'FEDFUNDS', description: 'Federal Funds Effective Rate' }
+    'FEDFUNDS': { id: 'FEDFUNDS', description: 'Federal Funds Effective Rate' },
+    'GDP': { id: 'GDP', description: 'Gross Domestic Product of the United States' }
   }
 } as const;
