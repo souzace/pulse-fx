@@ -7,9 +7,9 @@ interface SeriesMapping {
 export const PROVIDER_CONFIG = {
   BCB: {
     'USD_BRL': { id: 1, description: 'Taxa de câmbio (Livre - Dólar americano venda)' },
-    'SELIC': { id: 11, description: 'Taxa de juros Selic' },
+    'SELIC': { id: 11, description: 'Taxa de juros Selic Efetiva' },
     'IPCA': { id: 433, description: 'Índice Nacional de Preços ao Consumidor Amplo' },
-    '432': { id: 432, description: 'Série exclusiva para testes de integração' }
+    'SELIC_META': { id: 432, description: 'Taxa de juros Selic Meta' }
   },
   FRED: {
     'FEDFUNDS': { id: 'FEDFUNDS', description: 'Federal Funds Effective Rate' },
