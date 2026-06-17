@@ -1,14 +1,12 @@
-version: '3.8'
-
 services:
   database:
     image: postgres:15-alpine
     env_file:
       - ./apps/backend/.env
     environment:
-      POSTGRES_USER: ${PGUSER}
-      POSTGRES_PASSWORD: ${PGPASSWORD}
-      POSTGRES_DB: ${PGDATABASE}
+      POSTGRES_USER: ${PGUSER:-postgres}
+      POSTGRES_PASSWORD: ${PGPASSWORD:-docker}
+      POSTGRES_DB: ${PGDATABASE:-pulsefx}
     ports:
       - "5432:5432"
     volumes:
@@ -20,7 +18,9 @@ services:
       retries: 5
 
   backend:
-    image: node:20-alpine
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
     working_dir: /app/apps/backend
     volumes:
       - .:/app
@@ -28,7 +28,7 @@ services:
       - "3333:3333"
     env_file:
       - ./apps/backend/.env
-    command: sh -c "npm install && npm run dev"
+    command: sh -c "npm install && npm run build && npm run migrate:up && npm run dev"
     depends_on:
       database:
         condition: service_healthy
