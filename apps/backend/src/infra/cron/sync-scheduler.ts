@@ -5,10 +5,11 @@ import { BcbSgsProvider } from '../adapters/bcb-sgs.provider';
 import { FredProvider } from '../adapters/fred.provider';
 import { PROVIDER_CONFIG } from '../../config/providers.config';
 
-// Configure the synchronization scheduler to run daily at 00:00
 export function startSyncScheduler() {
-  cron.schedule('35 15 * * *', async () => {
-    console.log('Running daily synchronization task...');
+  console.log('startSyncScheduler function invoked on the server.');
+
+  cron.schedule('0 0 * * *', async () => {
+    console.log('Cron job triggered.');
     
     const repository = new PostgresIndicatorRepository();
     const bcbProvider = new BcbSgsProvider();
@@ -18,21 +19,19 @@ export function startSyncScheduler() {
     const fredSyncUseCase = new SyncIndicatorValuesUseCase(repository, fredProvider);
 
     try {
-      // Execute synchronization for indicators mapped under Central Bank of Brazil (BCB)
-      const bcbCodes = Object.keys(PROVIDER_CONFIG.BCB);
-      for (const code of bcbCodes) {
-        await syncUseCase.execute(code);
+      for (const dbCode of Object.keys(PROVIDER_CONFIG.BCB)) {
+        console.log(`Syncing BCB indicator: ${dbCode}`);
+        await syncUseCase.execute(dbCode);
       }
 
-      // Execute synchronization for indicators mapped under FRED
-      const fredCodes = Object.keys(PROVIDER_CONFIG.FRED);
-      for (const code of fredCodes) {
-        await fredSyncUseCase.execute(code);
+      for (const dbCode of Object.keys(PROVIDER_CONFIG.FRED)) {
+        console.log(`Syncing FRED indicator: ${dbCode}`);
+        await fredSyncUseCase.execute(dbCode);
       }
 
       console.log('Synchronization task completed successfully.');
     } catch (error) {
-      console.error('Error during daily synchronization:', error);
+      console.error('Error during cron execution:', error);
     }
   });
 }
