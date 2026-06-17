@@ -1,5 +1,8 @@
-import { pool } from '../../database';
-import { Indicator, IndicatorRepository } from '../../core/ports/indicator-repository.port';
+import { pool } from "../../database";
+import {
+  Indicator,
+  IndicatorRepository,
+} from "../../core/ports/indicator-repository.port";
 
 export class PostgresIndicatorRepository implements IndicatorRepository {
   async createIndicator(
@@ -7,7 +10,7 @@ export class PostgresIndicatorRepository implements IndicatorRepository {
     name: string,
     source: string,
     frequency: string,
-    description: string
+    description: string,
   ): Promise<string> {
     const query = `
       INSERT INTO indicators (code, name, source, frequency, description)
@@ -30,7 +33,11 @@ export class PostgresIndicatorRepository implements IndicatorRepository {
     return result.rows[0];
   }
 
-  async saveValue(indicatorId: string, value: number, date: string): Promise<void> {
+  async saveValue(
+    indicatorId: string,
+    value: number,
+    date: string,
+  ): Promise<void> {
     const query = `
       INSERT INTO indicator_values (indicator_id, value, reference_date)
       VALUES ($1, $2, $3)
@@ -45,7 +52,10 @@ export class PostgresIndicatorRepository implements IndicatorRepository {
     return result.rows;
   }
 
-  async getLatestValues(indicatorId: string, limit: number): Promise<{ date: string; value: number }[]> {
+  async getLatestValues(
+    indicatorId: string,
+    limit: number,
+  ): Promise<{ date: string; value: number }[]> {
     const query = `
       SELECT TO_CHAR(reference_date, 'YYYY-MM-DD') as date, value 
       FROM indicator_values 
@@ -54,13 +64,15 @@ export class PostgresIndicatorRepository implements IndicatorRepository {
       LIMIT $2
     `;
     const result = await pool.query(query, [indicatorId, limit]);
-    return result.rows.map(row => ({
+    return result.rows.map((row) => ({
       date: row.date,
-      value: parseFloat(row.value)
+      value: parseFloat(row.value),
     }));
   }
 
-  async getHistory(indicatorId: string): Promise<{ date: string; value: number }[]> {
+  async getHistory(
+    indicatorId: string,
+  ): Promise<{ date: string; value: number }[]> {
     const query = `
       SELECT TO_CHAR(reference_date, 'YYYY-MM-DD') as date, value 
       FROM indicator_values 
@@ -68,9 +80,18 @@ export class PostgresIndicatorRepository implements IndicatorRepository {
       ORDER BY reference_date ASC
     `;
     const result = await pool.query(query, [indicatorId]);
-    return result.rows.map(row => ({
+    return result.rows.map((row) => ({
       date: row.date,
-      value: parseFloat(row.value)
+      value: parseFloat(row.value),
     }));
+  }
+
+  async updateLastValue(
+    indicatorId: string,
+    value: number,
+    date: string,
+  ): Promise<void> {
+    const query = "UPDATE indicators SET last_value = $1, reference_date = $2 WHERE id = $3";
+    await pool.query(query, [value, date, indicatorId]);
   }
 }

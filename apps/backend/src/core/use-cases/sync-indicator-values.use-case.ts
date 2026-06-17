@@ -16,8 +16,17 @@ export class SyncIndicatorValuesUseCase {
 
     const values = await this.externalProvider.fetchValues(code, limit);
 
+    // Persistir todo o histórico
     for (const item of values) {
       await this.indicatorRepository.saveValue(indicator.id, item.value, item.date);
+    }
+
+    // Identificar o valor mais recente (assumindo que o provider retorna ordenado)
+    // Se o provider retorna do mais antigo para o mais novo, pegamos o último.
+    const latest = values[values.length - 1];
+
+    if (latest) {
+      await this.indicatorRepository.updateLastValue(indicator.id, latest.value, latest.date);
     }
   }
 }

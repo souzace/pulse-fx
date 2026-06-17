@@ -16,4 +16,5 @@ export interface IndicatorRepository {
   findAll(): Promise<Indicator[]>;
   getLatestValues(indicatorId: string, limit: number): Promise<{ date: string; value: number }[]>;
   getHistory(indicatorId: string): Promise<{ date: string; value: number }[]>;
+  updateLastValue(indicatorId: string, value: number, date: string): Promise<void>;
 }
