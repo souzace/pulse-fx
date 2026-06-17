@@ -8,11 +8,12 @@ const mockIndicator = {
   id: '1',
   name: 'Selic',
   code: 'SELIC',
-  lastValue: 10.5,
-  referenceDate: '2026-06-15',
   source: 'BCB',
-  frequency: 'Diária',
-  description: 'Taxa de juros'
+  frequency: 'daily',
+  description: 'Taxa Selic',
+  currentValue: 10.5, 
+  lastDate: '2026-06-15',
+  variation: 0.5
 };
 
 describe('IndicatorCard Component', () => {

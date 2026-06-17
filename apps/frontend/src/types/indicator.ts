@@ -5,7 +5,7 @@ export interface Indicator {
   source: string;
   frequency: string;
   description: string;
-  lastValue?: number;
-  referenceDate?: string;
+  currentValue?: number;
+  lastDate?: string;
   variation?: number;
 }
