@@ -20,11 +20,11 @@ cp apps/backend/.env.example apps/backend/.env
 Abra o arquivo `apps/backend/.env` e insira a chave da API do FRED:
 ```env
 PORT=3333
-PGUSER=postgres
-PGPASSWORD=password
-PGHOST=database
-PGPORT=5432
-PGDATABASE=pulse_fx
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
+POSTGRES_HOST=database
+POSTGRES_PORT=5432
+POSTGRES_DATABASE=pulse_fx
 FRED_API_KEY=insira_sua_chave_aqui
 ```
 
@@ -35,11 +35,11 @@ cp apps/backend/.env.test.sample apps/backend/.env.test
 ```
 Abra o arquivo `apps/backend/.env.test` e insira as credenciais do banco de testes:
 ```env
-PGUSER=postgres
-PGPASSWORD=xxxxx
-PGHOST=localhost
-PGPORT=5432
-PGDATABASE=pulse_fx_test
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=xxxxx
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DATABASE=pulse_fx_test
 ```
 
 **Configuração do Frontend:**
@@ -145,7 +145,7 @@ npm run dev
 
 ### Testes de Backend
 
-> **Aviso:** A execução de testes de backend exige o banco de dados em operação. Mantenha os contêineres em execução com o comando `docker compose up` antes de rodar os scripts de teste.
+> **Aviso:** A execução de testes de backend exige o banco de dados em operação. Mantenha os contêineres em execução com o comando `docker compose up` antes de rodar os scripts de teste. Ao executar o comando npm run test, o banco pulse_fx_test será criado em tempo real
 
 Para executar a suíte de testes da API e do banco de dados:
 ```bash

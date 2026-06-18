@@ -11,7 +11,7 @@
     "migrate:up": "node-pg-migrate -r dotenv/config -m dist/infra/migrations up",
     "migrate:down": "node-pg-migrate -r dotenv/config -m dist/infra/migrations down",
     "migrate:test:up": "node --env-file=.env.test ./node_modules/node-pg-migrate/bin/node-pg-migrate -m dist/infra/migrations up",
-    "db:test:create": "node --env-file=.env.test -e \"const { Client } = require('pg'); const c = new Client({ user: process.env.PGUSER, password: process.env.PGPASSWORD, host: process.env.PGHOST, port: process.env.PGPORT, database: 'postgres' }); c.connect().then(() => c.query('CREATE DATABASE ' + process.env.PGDATABASE)).catch(e => { if (e.code !== '42P04') throw e; }).finally(() => c.end())\"",
+    "db:test:create": "node --env-file=.env.test -e \"const { Client } = require('pg'); const c = new Client({ user: process.env.POSTGRES_USER, password: process.env.POSTGRES_PASSWORD, host: process.env.POSTGRES_HOST, port: Number(process.env.POSTGRES_PORT), database: 'postgres' }); c.connect().then(() => c.query('CREATE DATABASE \\\"' + process.env.POSTGRES_DATABASE + '\\\"')).catch(e => { if (e.code !== '42P04') throw e; }).finally(() => c.end())\"",
     "pretest": "npm run db:test:create && npm run migrate:test:up",
     "test": "node --env-file=.env.test ./node_modules/jest/bin/jest.js --runInBand"
   },

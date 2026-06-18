@@ -3,16 +3,13 @@ services:
     image: postgres:15-alpine
     env_file:
       - ./apps/backend/.env
-    environment:
-      POSTGRES_USER: ${PGUSER:-postgres}
-      POSTGRES_PASSWORD: ${PGPASSWORD:-docker}
-      POSTGRES_DB: ${PGDATABASE:-pulsefx}
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$PGUSER -d $$PGDATABASE"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DATABASE"]
       interval: 5s
       timeout: 5s
       retries: 5
