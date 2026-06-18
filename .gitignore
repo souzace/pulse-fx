@@ -1,19 +1,26 @@
+# Node
 node_modules/
 dist/
 build/
+coverage/
 .npm/
 npm-debug.log*
+
+# Environment
 .env
 .env.local
 .env.*.local
+.env.test
+
+# IDEs
 .vscode/
 .idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
+
+# OS
 *.swp
 .DS_Store
 Thumbs.db
-.env
-.env.test
