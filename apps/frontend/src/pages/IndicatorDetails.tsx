@@ -16,6 +16,42 @@ interface Indicator {
   description?: string;
 }
 
+const formatDate = (dateString: string) => {
+  if (!dateString) return 'N/A';
+  const [year, month, day] = dateString.split('T')[0].split('-');
+  return `${day}/${month}/${year}`;
+};
+
+const formatValue = (value: number, code?: string) => {
+  if (value === undefined || value === null) return 'N/A';
+
+  switch (code) {
+    case 'GDP':
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(value) + ' Bi';
+    case 'USD_BRL':
+      return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+        minimumFractionDigits: 4,
+        maximumFractionDigits: 4,
+      }).format(value);
+    case 'SELIC':
+      return `${value}% a.d.`;
+    case 'SELIC_META':
+      return `${value}% a.a.`;
+    case 'IPCA':
+    case 'FEDFUNDS':
+      return `${value}%`;
+    default:
+      return new Intl.NumberFormat('pt-BR').format(value);
+  }
+};
+
 export const IndicatorDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<HistoryRecord[] | null>(null);
@@ -73,18 +109,25 @@ export const IndicatorDetails: React.FC = () => {
         style={{
           marginTop: "20px",
           borderBottom: "2px solid #eee",
-          paddingBottom: "15px",
+          paddingBottom: "20px",
         }}
       >
-        <h1 style={{ margin: "0 0 5px 0" }}>
+        <h1 style={{ margin: "0 0 15px 0", textAlign: "left", fontSize: "2.2rem" }}>
           {indicator ? indicator.name : "Histórico do Indicador"}
         </h1>
+        
         {indicator && (
-          <p style={{ margin: 0, color: "#666", fontSize: "14px" }}>
-            Código: <strong>{indicator.code}</strong> | Fonte:{" "}
-            <strong>{indicator.source}</strong> | Frequência:{" "}
-            <strong>{indicator.frequency}</strong>
-          </p>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+            <span style={{ backgroundColor: "#f0f4f8", color: "#334155", padding: "6px 12px", borderRadius: "16px", fontSize: "14px" }}>
+              Código: <strong>{indicator.code}</strong>
+            </span>
+            <span style={{ backgroundColor: "#f0f4f8", color: "#334155", padding: "6px 12px", borderRadius: "16px", fontSize: "14px" }}>
+              Fonte: <strong>{indicator.source}</strong>
+            </span>
+            <span style={{ backgroundColor: "#f0f4f8", color: "#334155", padding: "6px 12px", borderRadius: "16px", fontSize: "14px" }}>
+              Frequência: <strong>{indicator.frequency}</strong>
+            </span>
+          </div>
         )}
       </div>
 
@@ -96,19 +139,20 @@ export const IndicatorDetails: React.FC = () => {
             style={{
               backgroundColor: "#f8f9fa",
               borderBottom: "2px solid #dee2e6",
-              textAlign: "left",
             }}
           >
-            <th style={{ padding: "12px" }}>Data</th>
-            <th style={{ padding: "12px" }}>Valor</th>
+            <th style={{ padding: "12px", textAlign: "left", width: "50%" }}>Data</th>
+            <th style={{ padding: "12px", textAlign: "left", width: "50%" }}>Valor</th>
           </tr>
         </thead>
         <tbody>
           {data.map((record, index) => (
             <tr key={index} style={{ borderBottom: "1px solid #eee" }}>
-              <td style={{ padding: "12px" }}>{record.date}</td>
-              <td style={{ padding: "12px", fontWeight: "500" }}>
-                {record.value}
+              <td style={{ padding: "12px", textAlign: "left" }}>
+                {formatDate(record.date)}
+              </td>
+              <td style={{ padding: "12px", textAlign: "left", fontWeight: "500" }}>
+                {formatValue(record.value, indicator?.code)}
               </td>
             </tr>
           ))}
