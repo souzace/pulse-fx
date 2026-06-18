@@ -12,18 +12,11 @@ export class ListIndicatorsUseCase {
       // Fetch the last 2 records to calculate the variation
       const values = await this.indicatorRepository.getLatestValues(indicator.id, 2);
       
-      let currentValue = null;
       let variation = 0;
-      let lastDate = null;
 
-      if (values.length > 0) {
-        currentValue = values[0].value;
-        lastDate = values[0].date;
-        
-        // Calculate variation if previous value exists
-        if (values.length === 2) {
-          variation = IndicatorCalculator.calculateVariation(values[0].value, values[1].value);
-        }
+      // Calculate variation if at least two records exist
+      if (values.length === 2) {
+        variation = IndicatorCalculator.calculateVariation(values[0].value, values[1].value);
       }
 
       result.push({
@@ -32,8 +25,8 @@ export class ListIndicatorsUseCase {
         name: indicator.name,
         source: indicator.source,
         frequency: indicator.frequency,
-        lastDate,
-        currentValue,
+        lastValue: indicator.lastValue,
+        referenceDate: indicator.referenceDate,
         variation,
       });
     }
