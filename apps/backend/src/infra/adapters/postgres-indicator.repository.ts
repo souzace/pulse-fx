@@ -30,7 +30,17 @@ export class PostgresIndicatorRepository implements IndicatorRepository {
       return null;
     }
 
-    return result.rows[0];
+    const row = result.rows[0];
+    return {
+      id: row.id,
+      code: row.code,
+      name: row.name,
+      source: row.source,
+      frequency: row.frequency,
+      description: row.description,
+      lastValue: row.last_value ? parseFloat(row.last_value) : undefined,
+      referenceDate: row.reference_date,
+    };
   }
 
   async saveValue(
@@ -49,7 +59,16 @@ export class PostgresIndicatorRepository implements IndicatorRepository {
   async findAll(): Promise<Indicator[]> {
     const query = `SELECT * FROM indicators`;
     const result = await pool.query(query);
-    return result.rows;
+    return result.rows.map((row) => ({
+      id: row.id,
+      code: row.code,
+      name: row.name,
+      source: row.source,
+      frequency: row.frequency,
+      description: row.description,
+      lastValue: row.last_value ? parseFloat(row.last_value) : undefined,
+      referenceDate: row.reference_date,
+    }));
   }
 
   async getLatestValues(

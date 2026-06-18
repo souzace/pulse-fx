@@ -5,8 +5,9 @@ export interface Indicator {
   source: string;
   frequency: string;
   description: string;
+  lastValue?: number;
+  referenceDate?: Date | string; 
 }
-
 export interface IndicatorRepository {
   createIndicator(code: string, name: string, source: string, frequency: string, description: string): Promise<string>;
   findByCode(code: string): Promise<Indicator | null>;
