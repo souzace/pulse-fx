@@ -162,3 +162,27 @@ cd apps/frontend
 npm install
 npm run test
 ```
+
+## Referências e Tecnologias
+
+### Fontes de Dados
+* **Banco Central do Brasil (SGS/Olinda):** [Portal de Dados Abertos](https://dadosabertos.bcb.gov.br/) e [Sistema Gerenciador de Séries Temporais](https://www3.bcb.gov.br/sgspub/).
+* **Federal Reserve Economic Data (FRED):** [Portal FRED](https://fred.stlouisfed.org/).
+
+### Backend e Infraestrutura
+* **Node.js:** [Documentação](https://nodejs.org/).
+* **Fastify:** [Documentação](https://fastify.dev/).
+* **Winston:** [Documentação](https://github.com/winstonjs/winston).
+* **node-pg-migrate:** [Documentação](https://salsita.github.io/node-pg-migrate/).
+* **PostgreSQL:** [Documentação](https://www.postgresql.org/).
+* **Docker:** [Documentação](https://docs.docker.com/).
+
+### Frontend
+* **React:** [Documentação](https://react.dev/).
+* **Axios:** [Documentação](https://axios-http.com/).
+* **React Router:** [Documentação](https://reactrouter.com/).
+
+### Desenvolvimento e Testes
+* **OpenAPI (Swagger):** [Documentação](https://swagger.io/specification/).
+* **Jest:** [Documentação](https://jestjs.io/).
+* **Vitest:** [Documentação](https://vitest.dev/).
