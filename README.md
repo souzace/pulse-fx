@@ -25,6 +25,8 @@ POSTGRES_PASSWORD=password
 POSTGRES_HOST=database
 POSTGRES_PORT=5432
 POSTGRES_DATABASE=pulse_fx
+#keep to be compatible with node-pg-migrate lib
+DATABASE_URL=postgresql://postgres:password@database:5432/pulse_fx
 FRED_API_KEY=insira_sua_chave_aqui
 ```
 
@@ -40,6 +42,8 @@ POSTGRES_PASSWORD=xxxxx
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_DATABASE=pulse_fx_test
+#keep to be compatible with node-pg-migrate lib
+DATABASE_URL=postgresql://postgres:password@database:5432/pulse_fx_test
 ```
 
 **Configuração do Frontend:**
